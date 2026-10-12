@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+.uv/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js
+node_modules/
+.next/
+out/
+.npm
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+qdrant_data/
+redis_data/
+repos/
+INTERVIEW_PREP.md
+CODELENS_COMPLETE_GUIDE.md
