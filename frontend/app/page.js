@@ -481,7 +481,14 @@ export default function Home() {
         }),
       });
 
-      if (!res.ok) throw new Error("Query failed");
+      if (!res.ok) {
+        let errorMsg = `Server error (${res.status})`;
+        try {
+          const errData = await res.json();
+          if (errData?.detail) errorMsg = errData.detail;
+        } catch {}
+        throw new Error(errorMsg);
+      }
 
       const data = await res.json();
 
@@ -513,7 +520,7 @@ export default function Home() {
         ...prev,
         {
           role: "assistant",
-          content: `Sorry, I encountered an error: ${err.message}. Make sure the backend is running at ${API_BASE} and the repository is indexed.`,
+          content: `⚠️ Error: ${err.message}`,
           time: errorTime,
         },
       ]);

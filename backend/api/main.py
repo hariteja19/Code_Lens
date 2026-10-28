@@ -195,6 +195,7 @@ async def query_codebase(req: QueryRequest):
     from backend.retriever.reranker import Reranker
     from backend.retriever.generator import Generator
 
+    load_dotenv(override=True)
     qdrant_url = os.getenv("QDRANT_URL", "local")
 
     try:
@@ -289,6 +290,25 @@ async def get_stats():
         "indexed_repos": repo_count,
         "active_jobs": len([j for j in jobs.values() if j.get("status") not in ("complete", "error")]),
         "collection": collection_info,
+    }
+
+
+@app.get("/")
+async def root():
+    """Root endpoint — welcome message with available routes."""
+    return {
+        "service": "CodeLens API",
+        "status": "running",
+        "docs": "http://localhost:8000/docs",
+        "frontend": "http://localhost:3000",
+        "endpoints": {
+            "POST /api/index": "Start indexing a GitHub repository",
+            "GET /api/index/{job_id}": "Check indexing job status",
+            "POST /api/query": "Query an indexed codebase",
+            "GET /api/repos": "List indexed repositories",
+            "GET /api/health": "Health check",
+            "GET /api/stats": "System statistics",
+        },
     }
 
 

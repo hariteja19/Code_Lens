@@ -1,5 +1,5 @@
 """
-Answer Generation with Citations using Groq (Llama 3.3 70B).
+Answer Generation with Citations using Groq (OpenAI GPT-OSS 120B).
 
 Prompt design:
 1. Numbered sources [1], [2], ... — enables precise citation
@@ -13,7 +13,7 @@ import os
 class Generator:
     """
     Generates natural language answers from retrieved code chunks using Groq.
-    Uses llama-3.3-70b-versatile via Groq's free inference tier.
+    Uses openai/gpt-oss-120b via Groq's inference tier.
     """
 
     def __init__(self, api_key: str | None = None):
@@ -26,7 +26,7 @@ class Generator:
         from groq import Groq
 
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
-        if not self.api_key:
+        if not self.api_key or self.api_key.strip() in ("", "your-groq-api-key-here"):
             raise ValueError(
                 "Groq API key required. Get a FREE key at: https://console.groq.com/keys\n"
                 "Set it as GROQ_API_KEY in your .env file."
@@ -34,7 +34,7 @@ class Generator:
 
         self.client = Groq(api_key=self.api_key)
         self.provider = "groq"
-        self.default_model = "llama-3.3-70b-versatile"
+        self.default_model = "openai/gpt-oss-120b"
 
     def build_prompt(self, query: str, retrieved_chunks: list) -> str:
         """Construct the RAG prompt with numbered, cited sources."""
